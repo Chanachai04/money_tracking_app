@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracking_app/constants/color_constant.dart';
 
+// ignore: must_be_immutable
 class CustomTextFormField extends StatefulWidget {
   final IconData? iconSuffix;
   final String labelText;
