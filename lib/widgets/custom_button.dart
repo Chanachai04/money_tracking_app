@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:money_tracking_app/constants/color_constant.dart';
 
-class MainButton extends StatelessWidget {
+class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final Color color;
-  MainButton({
+  const CustomButton({
     super.key,
     required this.text,
     required this.onPressed,
@@ -18,7 +19,7 @@ class MainButton extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           elevation: 2,
-          backgroundColor: const Color(0xFF00BFA5),
+          backgroundColor: const Color(mainColor),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50),
           ),

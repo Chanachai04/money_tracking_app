@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracking_app/screen/login_screen.dart';
 import 'package:money_tracking_app/screen/register_screen.dart';
-import 'package:money_tracking_app/widgets/main_button.dart';
+import 'package:money_tracking_app/widgets/custom_button.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -29,44 +29,42 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Column(
-                      children: [
-                        MainButton(
-                          text: "เริ่มใช้งานแอปพลิเคชัน",
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LoginScreen(),
-                              ),
-                            );
-                          },
-                          color: Colors.white,
-                        ),
-                        SizedBox(height: 15),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('ยังไม่ได้ลงทะเบียน? '),
-                            InkWell(
-                              onTap:
-                                  () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => RegisterScreen(),
-                                    ),
-                                  ),
-                              child: Text(
-                                'ลงทะเบียน ',
-                                style: TextStyle(color: Colors.blueAccent),
-                              ),
+                  SizedBox(height: 20),
+                  Column(
+                    children: [
+                      CustomButton(
+                        text: "เริ่มใช้งานแอปพลิเคชัน",
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginScreen(),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          );
+                        },
+                        color: Colors.white,
+                      ),
+                      SizedBox(height: 15),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('ยังไม่ได้ลงทะเบียน? '),
+                          InkWell(
+                            onTap:
+                                () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => RegisterScreen(),
+                                  ),
+                                ),
+                            child: Text(
+                              'ลงทะเบียน ',
+                              style: TextStyle(color: Colors.blueAccent),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),
