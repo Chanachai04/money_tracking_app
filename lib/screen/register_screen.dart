@@ -32,26 +32,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
-  Future<void> _pickDate() async {
-    DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate ?? DateTime.now(),
-      firstDate: DateTime(1925),
-      lastDate: DateTime(2025),
-    );
-
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-  }
-
-  // String get formattedDate {
-  //   final date = selectedDate ?? DateTime.now();
-  //   return DateFormat('yyyy-MM-dd').format(date);
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
