@@ -10,6 +10,6 @@ class SubHome01Screen extends StatefulWidget {
 class _SubHome01ScreenState extends State<SubHome01Screen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.red);
+    return Scaffold(backgroundColor: Colors.green);
   }
 }
