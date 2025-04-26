@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracking_app/constants/color_constant.dart';
+import 'package:money_tracking_app/screen/home_screen.dart';
 import 'package:money_tracking_app/widgets/custom_button.dart';
 import 'package:money_tracking_app/widgets/custom_textformfield.dart';
 
@@ -52,7 +53,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     hintText: "Username",
                     validateText: 'กรุณาใส่ชื่อผู้ใช้ให้ถูกต้อง',
                   ),
-                  const SizedBox(height: 20),
                   CustomTextFormField(
                     fieldKey: const Key('passwordKey'),
                     controller: userPasswordCtrl,
@@ -62,12 +62,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     hintText: "Password",
                     validateText: 'กรุณาใส่รหัสผ่านให้ถูกต้อง',
                   ),
-                  const SizedBox(height: 20),
                   CustomButton(
                     text: 'เข้าใช้งาน',
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        print('Login success!');
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                        );
                       }
                     },
                     color: Colors.white,

@@ -1,4 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:money_tracking_app/constants/color_constant.dart';
+import 'package:money_tracking_app/widgets/custom_button.dart';
+import 'package:money_tracking_app/widgets/custom_textformfield.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -8,8 +14,148 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final _formKey = GlobalKey<FormState>();
+  File? userFile;
+  DateTime? selectedDate;
+  TextEditingController userNameCtrl = TextEditingController();
+  TextEditingController userPasswordCtrl = TextEditingController();
+  TextEditingController fullNameCtrl = TextEditingController();
+  TextEditingController birthdayCtrl = TextEditingController();
+
+  Future<void> openCamera() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (image == null) return;
+
+    setState(() {
+      userFile = File(image.path);
+    });
+  }
+
+  Future<void> _pickDate() async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate ?? DateTime.now(),
+      firstDate: DateTime(1925),
+      lastDate: DateTime(2025),
+    );
+
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
+
+  // String get formattedDate {
+  //   final date = selectedDate ?? DateTime.now();
+  //   return DateFormat('yyyy-MM-dd').format(date);
+  // }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      appBar: AppBar(
+        backgroundColor: Color(mainColor),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+          'ลงทะเบียน',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        centerTitle: true,
+      ),
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 50),
+                  Text(
+                    'ข้อมูลผู้ใช้',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  SizedBox(height: 20),
+                  InkWell(
+                    onTap: () async {
+                      await openCamera();
+                    },
+                    child:
+                        userFile == null
+                            ? Image.asset(
+                              'assets/images/user_camera.png',
+                              width: 150,
+                              height: 150,
+                            )
+                            : ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: Image.file(
+                                userFile!,
+                                width: 150,
+                                height: 150,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                  ),
+                  const SizedBox(height: 20),
+                  CustomTextFormField(
+                    fieldKey: const Key('fullNameKey'),
+                    controller: fullNameCtrl,
+                    labelText: "ชื่อ-สกุล",
+                    hintText: "YOUR NAME",
+                    validateText: 'กรุณาใส่ชื่อ-สกุลให้ถูกต้อง',
+                  ),
+                  CustomTextFormField(
+                    fieldKey: const Key('birthdayKey'),
+                    controller: birthdayCtrl,
+                    birthdayCtrl: birthdayCtrl,
+                    labelText: "วัน-เดือน-ปี เกิด",
+                    iconSuffix: Icons.calendar_month,
+                    hintText: "YOUR  BIRTHDAY",
+                    validateText: 'กรุณาใส่วัน-เดือน-ปี เกิดให้ถูกต้อง',
+                  ),
+                  CustomTextFormField(
+                    fieldKey: const Key('userNameKey'),
+                    controller: userNameCtrl,
+                    labelText: "ชื่อผู้ใช้งาน",
+                    hintText: "Username",
+                    validateText: 'กรุณาใส่ชื่อผู้ใช้ให้ถูกต้อง',
+                  ),
+                  CustomTextFormField(
+                    fieldKey: const Key('passwordKey'),
+                    controller: userPasswordCtrl,
+                    obscureText: true,
+                    iconSuffix: Icons.lock,
+                    labelText: "รหัสผ่าน",
+                    hintText: "Password",
+                    validateText: 'กรุณาใส่รหัสผ่านให้ถูกต้อง',
+                  ),
+                  CustomButton(
+                    text: 'บันทึกการลงทะเบียน',
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        print('register success!');
+                      }
+                    },
+                    color: Colors.white,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
