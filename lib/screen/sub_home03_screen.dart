@@ -5,8 +5,13 @@ import 'package:money_tracking_app/widgets/custom_button.dart';
 import 'package:money_tracking_app/widgets/custom_textformfield.dart';
 
 class SubHome03Screen extends StatefulWidget {
-  final int? userId;
-  const SubHome03Screen({super.key, required this.userId});
+  final int userId;
+  final Function refreshData;
+  const SubHome03Screen({
+    required this.userId,
+    required this.refreshData,
+    super.key,
+  });
 
   @override
   State<SubHome03Screen> createState() => _SubHome03ScreenState();
@@ -78,10 +83,10 @@ class _SubHome03ScreenState extends State<SubHome03Screen> {
                       );
                       if (await MoneyApi().inOutMoney(moneyExpanse)) {
                         showSnackBar(context, "บันทึกเงินออก", Colors.green);
-
                         moneyDetailCtrl.clear();
                         moneyExpenseCtrl.clear();
                         moneyDateExpenseCtrl.clear();
+                        widget.refreshData();
                       } else {
                         showSnackBar(context, "บันทึกไม่สําเร็จ", Colors.red);
                       }

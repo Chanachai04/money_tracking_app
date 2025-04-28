@@ -5,27 +5,19 @@ import 'package:money_tracking_app/models/money.dart';
 class MoneyApi {
   final dio = Dio();
 
-  Future<List<Money>> getMoneyByType(Money money) async {
+  Future<List<Money>> getMoneyByUserId(int userId) async {
     try {
-      final Map<String, dynamic> requestBody = {
-        'moneyType': money.moneyType,
-        'userId': money.userId,
-      };
-      final responseData = await dio.get(
-        '$baseUrl/money/',
-        data: requestBody,
-        options: Options(headers: {'content-type': 'application/json'}),
-      );
+      final responseData = await dio.get('$baseUrl/money/$userId');
       if (responseData.statusCode == 200) {
-        return List<Money>.from(
-          responseData.data.map((x) => Money.fromJson(x)),
-        );
+        return (responseData.data['info'] as List)
+            .map((money) => Money.fromJson(money))
+            .toList();
       } else {
-        return [];
+        return <Money>[];
       }
     } catch (err) {
-      print('ERROR: ${err.toString()}');
-      return [];
+      print('ERRORs: ${err.toString()}');
+      return <Money>[];
     }
   }
 

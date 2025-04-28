@@ -19,7 +19,7 @@ class Money {
     moneyId = json['moneyId'];
     moneyDetail = json['moneyDetail'];
     moneyDate = json['moneyDate'];
-    moneyInOut = json['moneyInOut'];
+    moneyInOut = (json['moneyInOut'] as num?)?.toDouble();
     moneyType = json['moneyType'];
     userId = json['userId'];
   }
