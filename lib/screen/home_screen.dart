@@ -6,7 +6,6 @@ import 'package:money_tracking_app/constants/color_constant.dart';
 import 'package:money_tracking_app/screen/sub_home01_screen.dart';
 import 'package:money_tracking_app/screen/sub_home02_screen.dart';
 import 'package:money_tracking_app/screen/sub_home03_screen.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   final String? userName;

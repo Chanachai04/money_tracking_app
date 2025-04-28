@@ -12,8 +12,6 @@ dependencies:
   dio: ^5.8.0+1
   image_picker: ^1.1.2
   google_fonts: ^6.2.1
-  provider: ^6.1.4
-  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:
