@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
     refreshData();
     showUI = [
       SubHome01Screen(userId: widget.userId!, refreshData: refreshData),
-      SubHome02Screen(),
+      SubHome02Screen(userId: widget.userId!),
       SubHome03Screen(userId: widget.userId!, refreshData: refreshData),
     ];
     super.initState();
