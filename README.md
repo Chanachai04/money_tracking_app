@@ -1,6 +1,6 @@
 # money_tracking_app
 
-<img src="https://github.com/user-attachments/assets/c88afbaf-5b8a-43fa-af9c-f71ca90c0a8c" width = "200px">
+<img src="https://github.com/user-attachments/assets/95f846cd-2e8c-47cf-92f3-6007df968b43" width = "200px">
 <img src="https://github.com/user-attachments/assets/52f04812-af3f-41a1-b3fc-4af5076c4c00" width = "200px">
 <img src="https://github.com/user-attachments/assets/7ba50241-cf16-4f6d-8a7b-2eb757ef21f8" width = "200px">
 <img src="https://github.com/user-attachments/assets/8c321cfe-d8bd-43e8-a4d3-d2f347eacab4" width = "200px">
