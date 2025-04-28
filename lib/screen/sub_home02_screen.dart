@@ -20,7 +20,6 @@ class _SubHome02ScreenState extends State<SubHome02Screen> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
-
             Expanded(
               child: ListView.builder(
                 itemCount: 3,

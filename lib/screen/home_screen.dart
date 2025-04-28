@@ -1,11 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:money_tracking_app/constants/baseurl_constant.dart';
 import 'package:money_tracking_app/constants/color_constant.dart';
 import 'package:money_tracking_app/screen/sub_home01_screen.dart';
 import 'package:money_tracking_app/screen/sub_home02_screen.dart';
 import 'package:money_tracking_app/screen/sub_home03_screen.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final String? userName;
+  final String? userImage;
+  final int? userId;
+
+  const HomeScreen({super.key, this.userName, this.userImage, this.userId});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -13,8 +21,18 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 1;
+  File? userFile;
+  List showUI = [];
+  @override
+  void initState() {
+    showUI = [
+      SubHome01Screen(userId: widget.userId),
+      SubHome02Screen(),
+      SubHome03Screen(userId: widget.userId),
+    ];
+    super.initState();
+  }
 
-  List showUI = [SubHome01Screen(), SubHome02Screen(), SubHome03Screen()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,12 +40,28 @@ class _HomeScreenState extends State<HomeScreen> {
         automaticallyImplyLeading: false,
         title: Row(
           children: [
-            Text('Firstname ', style: TextStyle(color: Colors.white)),
-            Text("Lastname", style: TextStyle(color: Colors.white)),
+            Text(
+              widget.userName.toString(),
+              style: TextStyle(color: Colors.white),
+            ),
           ],
         ),
         actions: [
-          Image.asset('assets/images/user_camera.png', width: 40),
+          widget.userImage == null
+              ? Image.asset(
+                'assets/images/user_camera.png',
+                width: 50,
+                height: 50,
+              )
+              : ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: Image.network(
+                  '$baseUrl/images/users/${widget.userImage}',
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.cover,
+                ),
+              ),
           SizedBox(width: 25),
         ],
         backgroundColor: Color(mainColor),
@@ -80,8 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                   Text(
-                    "xxxxx",
-                    style: TextStyle(color: Colors.white, fontSize: 24),
+                    "xxxx บาท",
+                    style: TextStyle(color: Colors.white, fontSize: 28),
                   ),
                   SizedBox(height: 20),
                   Row(
@@ -108,14 +142,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           Text(
-                            "xxxxx",
-                            style: TextStyle(color: Colors.white, fontSize: 24),
+                            "XXX บาท",
+                            style: TextStyle(color: Colors.white, fontSize: 18),
                           ),
                         ],
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
-
                         children: [
                           Row(
                             children: [
@@ -134,8 +167,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           Text(
-                            "xxxxx",
-                            style: TextStyle(color: Colors.white, fontSize: 24),
+                            "XXX บาท",
+                            style: TextStyle(color: Colors.white, fontSize: 18),
                           ),
                         ],
                       ),

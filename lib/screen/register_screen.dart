@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:money_tracking_app/constants/color_constant.dart';
+import 'package:money_tracking_app/models/user.dart';
+import 'package:money_tracking_app/services/user_api.dart';
 import 'package:money_tracking_app/widgets/custom_button.dart';
 import 'package:money_tracking_app/widgets/custom_textformfield.dart';
 
@@ -17,10 +19,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   File? userFile;
   DateTime? selectedDate;
-  TextEditingController userNameCtrl = TextEditingController();
+  TextEditingController userfullNameCtrl = TextEditingController();
   TextEditingController userPasswordCtrl = TextEditingController();
-  TextEditingController fullNameCtrl = TextEditingController();
-  TextEditingController birthdayCtrl = TextEditingController();
+  TextEditingController userNameCtrl = TextEditingController();
+  TextEditingController userBirthdayCtrl = TextEditingController();
 
   Future<void> openCamera() async {
     final image = await ImagePicker().pickImage(source: ImageSource.camera);
@@ -30,6 +32,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
     setState(() {
       userFile = File(image.path);
     });
+  }
+
+  showWarningSnackBar(context, message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 2),
+      ),
+    );
   }
 
   @override
@@ -91,15 +103,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 20),
                   CustomTextFormField(
                     fieldKey: const Key('fullNameKey'),
-                    controller: fullNameCtrl,
+                    controller: userfullNameCtrl,
                     labelText: "ชื่อ-สกุล",
                     hintText: "YOUR NAME",
                     validateText: 'กรุณาใส่ชื่อ-สกุลให้ถูกต้อง',
                   ),
                   CustomTextFormField(
                     fieldKey: const Key('birthdayKey'),
-                    controller: birthdayCtrl,
-                    birthdayCtrl: birthdayCtrl,
+                    controller: userBirthdayCtrl,
                     labelText: "วัน-เดือน-ปี เกิด",
                     iconSuffix: Icons.calendar_month,
                     hintText: "YOUR  BIRTHDAY",
@@ -123,9 +134,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   CustomButton(
                     text: 'บันทึกการลงทะเบียน',
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        print('register success!');
+                        User user = User(
+                          userFullname: userfullNameCtrl.text.trim(),
+                          userBirthDate: userBirthdayCtrl.text.trim(),
+                          userName: userNameCtrl.text.trim(), // ← อันนี้แก้!
+                          userPassword: userPasswordCtrl.text.trim(),
+                        );
+
+                        if (await UserApi().registerUser(user, userFile)) {
+                          Navigator.pop(context);
+                        } else {
+                          showWarningSnackBar(context, "ลงทะเบียนไม่สําเร็จ");
+                        }
                       }
                     },
                     color: Colors.white,

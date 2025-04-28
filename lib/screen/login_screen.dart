@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracking_app/constants/color_constant.dart';
+import 'package:money_tracking_app/models/user.dart';
 import 'package:money_tracking_app/screen/home_screen.dart';
+import 'package:money_tracking_app/services/user_api.dart';
 import 'package:money_tracking_app/widgets/custom_button.dart';
 import 'package:money_tracking_app/widgets/custom_textformfield.dart';
 
@@ -14,6 +16,17 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController userNameCtrl = TextEditingController();
   TextEditingController userPasswordCtrl = TextEditingController();
+
+  showWarningSnackBar(context, message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -64,12 +77,35 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   CustomButton(
                     text: 'เข้าใช้งาน',
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                        User user = User(
+                          userName: userNameCtrl.text.trim(),
+                          userPassword: userPasswordCtrl.text.trim(),
                         );
+
+                        user = await UserApi().loginUser(user);
+
+                        if (user.userId != null) {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => HomeScreen(
+                                    userName: user.userFullname,
+                                    userImage: user.userImage,
+                                    userId: int.parse(user.userId.toString()),
+                                  ),
+                            ),
+                            (Route<dynamic> route) => false,
+                          );
+                        } else if (user.userName != userNameCtrl.text.trim() ||
+                            user.userPassword != userPasswordCtrl.text.trim()) {
+                          showWarningSnackBar(
+                            context,
+                            'ชื่อและรหัสผ่านไม่ถูกต้อง',
+                          );
+                        }
                       }
                     },
                     color: Colors.white,

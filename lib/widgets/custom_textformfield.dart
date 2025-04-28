@@ -9,7 +9,6 @@ class CustomTextFormField extends StatefulWidget {
   final TextEditingController controller;
   final Key fieldKey;
   final String validateText;
-  final TextEditingController? birthdayCtrl;
   bool obscureText;
   CustomTextFormField({
     super.key,
@@ -20,7 +19,6 @@ class CustomTextFormField extends StatefulWidget {
     required this.validateText,
     this.iconSuffix,
     this.obscureText = false,
-    this.birthdayCtrl,
   });
 
   @override
@@ -29,6 +27,8 @@ class CustomTextFormField extends StatefulWidget {
 
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
   DateTime? selectedDate;
+
+  // ฟังก์ชัน pickDate เพื่อเลือกวันที่
   Future<void> pickDate() async {
     final now = DateTime.now();
     final firstDate = DateTime(1925);
@@ -54,7 +54,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     if (picked != null) {
       setState(() {
         selectedDate = picked;
-        widget.birthdayCtrl?.text = formatDate(picked);
+        widget.controller.text = formatDate(
+          picked,
+        ); // อัพเดต TextFormField ด้วยวันที่ที่เลือก
       });
     }
   }
@@ -63,31 +65,36 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextFormField(
-          key: widget.fieldKey,
-          obscureText: widget.obscureText,
-          controller: widget.controller,
-          decoration: InputDecoration(
-            suffixIcon: buildSuffixIcon(),
-            suffixIconColor: Colors.grey,
-            labelText: widget.labelText,
-            labelStyle: TextStyle(color: Colors.black),
-            hintText: widget.hintText,
-            hintStyle: TextStyle(color: Colors.grey),
-            border: const OutlineInputBorder(),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(mainColor), width: 2.0),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(mainColor), width: 2.0),
-            ),
-          ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return widget.validateText;
-            }
-            return null;
+        GestureDetector(
+          onTap: () {
+            pickDate(); // เปิดเลือกวันที่เมื่อกดที่ TextFormField
           },
+          child: TextFormField(
+            key: widget.fieldKey,
+            obscureText: widget.obscureText,
+            controller: widget.controller,
+            decoration: InputDecoration(
+              suffixIcon: buildSuffixIcon(),
+              suffixIconColor: Colors.grey,
+              labelText: widget.labelText,
+              labelStyle: TextStyle(color: Colors.black),
+              hintText: widget.hintText,
+              hintStyle: TextStyle(color: Colors.grey),
+              border: const OutlineInputBorder(),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Color(mainColor), width: 2.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Color(mainColor), width: 2.0),
+              ),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return widget.validateText;
+              }
+              return null;
+            },
+          ),
         ),
         const SizedBox(height: 20),
       ],
@@ -111,7 +118,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       return IconButton(
         icon: Icon(widget.iconSuffix),
         onPressed: () {
-          pickDate();
+          pickDate(); // เมื่อกดที่ไอคอนปฏิทินก็เลือกวันที่ได้เช่นกัน
         },
       );
     }
